@@ -169,7 +169,7 @@ const Signin = () => {
                 type="flex"
                 justify="center"
                 align=""
-                span={12}
+                span={24} style={{border: '40px solid #ccc', borderRadius: '5px', padding: '20px'}}
               >
                 <h3 className="text-align-left">Sign up</h3>
 

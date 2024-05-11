@@ -85,7 +85,7 @@ const Login = () => {
         <Content>
           <Row className="main-col">
             <Col className="form-section" span={12}>
-              <Col className="innter-form-section" span={12}>
+              <Col className="innter-form-section" span={24} style={{border: '40px solid #ccc', borderRadius: '5px', padding: '20px'}}>
                 <h3 className="text-align-left">Login</h3>
 
                 <Form
