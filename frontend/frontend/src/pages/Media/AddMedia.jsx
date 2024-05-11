@@ -1,24 +1,31 @@
 import React, { useState } from "react";
 import Image from "../../assests/addMeal/addImage.png";
 import Video from "../../assests/addMeal/addVideo.png";
-import { Button } from "antd";
+import { Button ,message } from "antd";
 import axios from 'axios';
 function AddMedia() {
+  const [mediaTitle, setMediaTitle] = useState('');
   const [mediaDescription, setMediaDescription] = useState('');
-  const [mediaTitle, setmediaTitle] = useState('');
-  const [posts, setPosts] = useState([]);
 
-  
   const handlePost = async () => {
     try {
       const response = await axios.post('http://localhost:5005/api/v1/feed/create', {
+        title: mediaTitle,
         description: mediaDescription,
-        title: mediaTitle
+        userID: null, // Assuming userID is not provided by user input
+        likes: 444, // Assuming default likes value
+        likedUsers: null,
+        comments: null,
+        timestamp: null,
       });
       console.log('Media created:', response.data);
-      window.location.reload();
+      message.success('Media posted successfully');
+      // Clear input fields after posting
+      setMediaTitle('');
+      setMediaDescription('');
     } catch (error) {
       console.error('Error creating media:', error);
+      message.error('Failed to post media. Please try again.');
     }
   };
 
@@ -30,7 +37,14 @@ function AddMedia() {
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7abuuQGsvTyyqVDOGBy-sVIrorOZrB231GWibW_YRNQ&s"
             alt=""
           />
-           <input
+          <input
+            type="text"
+            value={mediaTitle}
+            onChange={(e) => setMediaTitle(e.target.value)}
+            className="post-text"
+            placeholder="Enter media title"
+          />
+          <input
             type="text"
             value={mediaDescription}
             onChange={(e) => setMediaDescription(e.target.value)}
@@ -57,7 +71,7 @@ function AddMedia() {
             </label>
           </div>
           <div className="right">
-          <Button type="primary" onClick={handlePost}>Post</Button>
+            <Button type="primary" onClick={handlePost}>Post</Button>
           </div>
         </div>
       </div>
