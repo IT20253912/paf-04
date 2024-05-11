@@ -88,7 +88,7 @@ function AddWorkOuts() {
             <label htmlFor="file">
               <div className="item">
                 <img src={Workout} alt="" />
-                <span>WorkOut Plans</span>
+                <span>Edit My Post</span>
               </div>
             </label>
           </div>
