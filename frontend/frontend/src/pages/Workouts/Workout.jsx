@@ -1,47 +1,49 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Post from "./post";
 import Stories from "../../components/stories/Stories";
 import "../../css/workouts.css";
 import AddWorkOuts from "./AddWorkOuts";
 
 function Workout() {
-  const posts = [
-    {
-      id: 1,
-      name: "Saman Gunawadhane",
-      userId: 1,
-      profilePic:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTidbG_nCyshZ_WDJV7DQwR8PoE0MlojF0s3wm-kBqwY3BJVO4X0AMSQ9yC9deiotazqGc&usqp=CAU",
-      desc: "Use handheld weights or machines. For squats and lunges, keep your weight in your heels or the center of your feet to prevent your knees from extending past your toes.",
-      img: "https://cdn.mos.cms.futurecdn.net/b46wd2AXdmnJQv3faAwQWU.jpg",
-    },
-    {
-      id: 2,
-      name: "Pethum Saman",
-      userId: 1,
-      profilePic:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSjEiBdH6Mq9Zve-0-TwgKE2rNZxcD7PRaEuLkw_MoUw&s",
-      desc: "Use handheld weights or machines. For squats and lunges, keep your weight in your heels or the center of your feet to prevent your knees from extending past your toes.",
-      img: "https://i0.wp.com/www.muscleandfitness.com/wp-content/uploads/2018/11/Group-Fitness-Class-Performing-A-Variety-Of-Exercises-1.jpg?quality=86&strip=all",
-    },
-    {
-      id: 3,
-      name: "kumara Perera",
-      userId: 1,
-      profilePic:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAKO2X_Z6623v8OxwiEkFqzhYnpy4xU66u6XGXQl19qg&s",
-      desc: "Use handheld weights or machines. For squats and lunges, keep your weight in your heels or the center of your feet to prevent your knees from extending past your toes.",
-      img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuh9PesOmnoOugJVI99R2a62DfIQkd47Yx8k1q_wyqCQ&s",
-    },
-    
- 
-  ];
+  // State to store the posts fetched from the API
+  const [apiPosts, setApiPosts] = useState([]);
+
+  // Default image link
+  const defaultImageLink = "https://cdn.mos.cms.futurecdn.net/b46wd2AXdmnJQv3faAwQWU.jpg";
+
+  // Function to fetch posts from the API
+  const fetchPosts = async () => {
+    try {
+      const response = await fetch("http://localhost:5005/api/v1/workout/getAll");
+      const data = await response.json();
+      setApiPosts(data);
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+    }
+  };
+
+  // Fetch posts when component mounts
+  useEffect(() => {
+    fetchPosts();
+  }, []);
+
   return (
     <div className="posts">
       <Stories />
       <AddWorkOuts />
-      {posts.map((post) => (
-        <Post post={post} key={post.id} />
+      {/* Render posts from API */}
+      {apiPosts.map((post) => (
+        <Post
+          key={post.id}
+          post={{
+            id: post.id,
+            name: post.title, // Assuming "title" from API corresponds to "name" in your existing post structure
+            userId: post.userID, // Assuming "userID" from API corresponds to "userId" in your existing post structure
+            desc: post.description, // Assuming "description" from API corresponds to "desc" in your existing post structure
+            img: post.img || defaultImageLink, // Use API image link if available, otherwise use defaultImageLink
+            // You can modify or add more mappings based on your API response structure
+          }}
+        />
       ))}
     </div>
   );
