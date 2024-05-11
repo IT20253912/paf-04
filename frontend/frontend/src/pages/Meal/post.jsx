@@ -13,6 +13,8 @@ import MenuItem from "@mui/material/MenuItem";
 const Post = ({ post }) => {
   const [commentOpen, setCommentOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [liked, setLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(12); // Initial like count
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -22,7 +24,11 @@ const Post = ({ post }) => {
     setAnchorEl(null);
   };
 
-  const liked = false;
+  const handleLike = () => {
+    // Toggle like status and update like count
+    setLiked(!liked);
+    setLikeCount(liked ? likeCount - 1 : likeCount + 1);
+  };
 
   return (
     <div className="post">
@@ -35,7 +41,7 @@ const Post = ({ post }) => {
                 to={`/profile/${post.userId}`}
                 style={{ textDecoration: "none", color: "inherit" }}
               >
-                <span className="name">{post.title}</span>
+                <span className="name">{post.name}</span>
               </Link>
               <span className="date">1 min ago</span>
             </div>
@@ -53,20 +59,21 @@ const Post = ({ post }) => {
           </Menu>
         </div>
         <div className="content">
-          <p>{post.description}</p>
+          <p>{post.desc}</p>
           <img src={post.img} alt="" />
         </div>
         <div className="info">
-          <div className="item">
-            {liked ? <FavoriteOutlinedIcon /> : <FavoriteBorderOutlinedIcon />}
-            {post.likes}
+          <div className="item" onClick={handleLike}>
+            {liked ? (
+              <FavoriteOutlinedIcon style={{ color: "red" }} />
+            ) : (
+              <FavoriteBorderOutlinedIcon />
+            )}
+            {likeCount} Likes
           </div>
-          <div
-            className="item"
-            onClick={() => setCommentOpen(!commentOpen)}
-          >
+          <div className="item" onClick={() => setCommentOpen(!commentOpen)}>
             <TextsmsOutlinedIcon />
-            {post.comments}
+            12 Comments
           </div>
           <div className="item">
             <ShareOutlinedIcon />
