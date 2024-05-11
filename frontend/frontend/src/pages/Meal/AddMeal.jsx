@@ -12,10 +12,18 @@ function AddMeal() {
   const handlePost = async () => {
     try {
       const response = await axios.post('http://localhost:5005/api/v1/mealplans/create', {
+        title: mealTitle,
         description: mealDescription,
-        title: mealTitle
+        userID: null, // Assuming userID is not provided by user input
+        likes: 444, // Assuming default likes value
+        likedUsers: null,
+        comments: null,
+        timestamp: null,
       });
       console.log('Meal plan created:', response.data);
+      // Clear input fields after posting
+      setMealTitle('');
+      setMealDescription('');
     } catch (error) {
       console.error('Error creating meal plan:', error);
     }
@@ -40,6 +48,13 @@ function AddMeal() {
           <img
             src="https://www.pinpng.com/pngs/m/80-804746_profile-icon-female-user-icon-png-transparent-png.png"
             alt=""
+          />
+          <input
+            type="text"
+            value={mealTitle}
+            onChange={(e) => setMealTitle(e.target.value)}
+            className="post-text"
+            placeholder="Enter meal title"
           />
           <input
             type="text"
@@ -86,6 +101,7 @@ function AddMeal() {
       </div>
     </div>
   );
+
 }
 
 export default AddMeal;
